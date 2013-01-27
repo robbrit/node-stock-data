@@ -1,0 +1,12 @@
+{
+  "name": "stock-data",
+  "version" : "0.0.1",
+  "dependencies" : {
+    "coffee-script": "1.4.0",
+    "request": "2.12.0",
+    "jsdom": "0.3.4"
+  },
+  "scripts": {
+    "compile": "coffee -cb stock-data.coffee && mv stock-data.js index.js"
+  }
+}
