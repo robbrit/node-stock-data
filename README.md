@@ -17,6 +17,7 @@ Also pretty easy:
 
     stockData = require("stock-data");
 
+    // grab fundamental data of SPY
     stockData.fundamentals("NYSEARCA", "SPY", function(err, data){
       console.log(err, data);
     });
@@ -42,3 +43,8 @@ Would output (as of Jan. 27, 2013):
       range52WeekEnd: 150.25,
       netProfitMargin: 323.71 }
         
+
+Licence
+=======
+
+MIT
