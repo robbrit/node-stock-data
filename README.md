@@ -10,6 +10,18 @@ Easy:
 
     npm install stock-data
 
+Features
+========
+
+At the moment the feature list is pretty small:
+
+* Fundamental data extraction
+
+Planned features:
+
+* Price extraction by date range
+* Dividend Data
+
 Usage:
 ======
 
