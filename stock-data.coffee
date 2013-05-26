@@ -94,6 +94,7 @@ parseData = (body, onFinish) ->
 #              arguments: (error, results), the results object containing
 #              various fundamental data.
 exports.fundamentals = (mkt, sym, onFinish) ->
+  # TODO: support promises
   fullSym = "#{mkt}:#{sym}"
 
   if symbols[fullSym]

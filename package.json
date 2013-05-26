@@ -1,16 +1,25 @@
 {
   "name": "stock-data",
   "version" : "0.0.3",
+  "description": "A simple library for extacting stock data from Google Finance.",
   "author": "Rob Britton <rob@robbritton.com>",
-  "description" : "Node.js package for extracting fundamental stock data from Google Finance.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robbrit/node-stock-data"
+  },
   "dependencies" : {
     "coffee-script": "1.4.0",
     "request": "2.12.0",
     "jsdom": "0.3.4"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:/robbrit/node-stock-data.git"
-  },
-  "license": "MIT"
+  "keywords": [
+    "stocks", "finance"
+  ],
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Rob Britton",
+      "email": "rob@robbritton.com"
+    }
+  ]
 }
