@@ -22,6 +22,9 @@ parseBigNum = (str) ->
     parseFloat(found[1]) * 1000000000000
 
 # Parse the response from Google Finance
+# Fields that it grabs:
+# price, range, range52week, open, volume, marketCap, peRatio, dividend,
+# eps, shares, beta, netProfitMargin
 parseData = (body, onFinish) ->
   jsdom.env(
     html: body
