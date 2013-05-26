@@ -1,7 +1,7 @@
 {
   "name": "stock-data",
-  "version" : "0.0.3",
-  "description": "A simple library for extacting stock data from Google Finance.",
+  "version" : "0.0.4",
+  "description": "A simple library for extracting stock data from Google Finance.",
   "author": "Rob Britton <rob@robbritton.com>",
   "repository": {
     "type": "git",
