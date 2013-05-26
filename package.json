@@ -1,6 +1,6 @@
 {
   "name": "stock-data",
-  "version" : "0.0.2",
+  "version" : "0.0.3",
   "author": "Rob Britton <rob@robbritton.com>",
   "description" : "Node.js package for extracting fundamental stock data from Google Finance.",
   "dependencies" : {
