@@ -1,6 +1,6 @@
 {
   "name": "stock-data",
-  "version" : "0.0.4",
+  "version" : "0.1.0",
   "description": "A simple library for extracting stock data from Google Finance.",
   "author": "Rob Britton <rob@robbritton.com>",
   "repository": {
@@ -10,7 +10,9 @@
   "dependencies" : {
     "coffee-script": "1.4.0",
     "request": "2.12.0",
-    "jsdom": "0.3.4"
+    "jsdom": "0.3.4",
+    "underscore": "*",
+    "basic-csv": "*"
   },
   "keywords": [
     "stocks", "finance"

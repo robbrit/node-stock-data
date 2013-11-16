@@ -2,8 +2,11 @@ req = require "request"
 jsdom = require "jsdom"
 fs = require "fs"
 path = require "path"
+_ = require "underscore"
+basicCSV = require "basic-csv"
 
 url = "http://www.google.com/finance?q="
+CACHE_DIR = "#{__dirname}/cache/"
 
 symbols = {}
 jquery = fs.readFileSync(path.resolve(__dirname, "jquery.js")).toString()
@@ -108,3 +111,99 @@ exports.fundamentals = (mkt, sym, onFinish) ->
           onFinish null, symbols[fullSym]
       else
         onFinish err, null
+
+# Fetch price data from Yahoo Finance
+exports.fetchPriceData = (options, onFinish) ->
+  startDate = options.startDate.split "-"
+  endDate = options.endDate.split "-"
+  symbol = options.symbol
+
+  url = "http://ichart.finance.yahoo.com/table.csv?" +
+    [
+      "s=#{symbol}"
+      "d=#{parseInt(endDate[1], 10) - 1}"
+      "e=#{parseInt endDate[2], 10}"
+      "f=#{endDate[0]}"
+      "g=d" # this is for daily quotes
+      "a=#{parseInt(startDate[1], 10) - 1}"
+      "b=#{parseInt startDate[2], 10}"
+      "c=#{startDate[0]}"
+      "ignore=.csv"
+    ].join("&")
+
+  req url, (err, resp, body) ->
+    onFinish err, body
+
+# Parse Yahoo Finance CSV data into an object like this:
+#   {
+#     date: [...],
+#     open: [...],
+#     close: [...],
+#     ...
+#   }
+parseCSVData = (csvData, onFinish) ->
+  basicCSV.readCSVFromString csvData, {
+    dropHeader: true
+  }, (err, rows) ->
+    if err
+      onFinish err, null
+      return
+
+    fields = ["date", "open", "high", "low", "close", "volume", "adj_close"]
+    frame = {}
+
+    _.each fields, (fieldName, i) ->
+      frame[fieldName] = []
+
+    _.each rows, (row, i) ->
+      _.each fields, (fieldName, j) ->
+        # Use unshift to reverse the array
+        frame[fieldName].unshift(row[j])
+
+    onFinish null, frame
+
+# Extract historical price data from Yahoo Finance - using Yahoo Finance since
+# Google Finance does not support historical data for Canada.
+# Possible options:
+exports.fetch = (options, onFinish) ->
+  options = _.defaults options, {
+    useCache: true
+    startDate: "2012-01-01"
+    endDate: "2012-12-31"
+  }
+
+  # Check if it is available in the cache
+  fileName = [options.symbol, options.startDate, options.endDate].join "-"
+  fileName = "#{CACHE_DIR}#{fileName}.csv"
+
+  if options.useCache
+    fs.exists fileName, (exists) ->
+      if exists
+        fs.readFile fileName, "utf-8", (err, data) ->
+          if err
+            onFinish err, null
+          else
+            parseCSVData data, onFinish
+      else
+        exports.fetchPriceData options, (err, data) ->
+          if err
+            onFinish err, null
+            return
+
+          fs.mkdir CACHE_DIR, (err) ->
+            if err
+              onFinish err
+              return
+
+            fs.writeFile fileName, data, (err) ->
+              if err
+                onFinish err
+              else
+                parseCSVData data, onFinish
+  else
+    exports.fetchPriceData options, (err, data) ->
+      if err
+        onFinish err, null
+      else
+        parseCSVData data, onFinish
+
